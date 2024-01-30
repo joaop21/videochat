@@ -26,7 +26,8 @@ config :videochat, VideochatWeb.Endpoint,
   secret_key_base: "6sYPdtaLtqLXQZQKocu5VvXXpzQwsQiVfc5xiS15IqD3CXmesYfahbZNMyHD+sYp",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]},
+    yarn: ["--cwd", "assets", "run", "typecheck", "--", "--watch"]
   ]
 
 # ## SSL Support
