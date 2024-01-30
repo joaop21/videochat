@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "typecheck": "tsc --noEmit --pretty"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
