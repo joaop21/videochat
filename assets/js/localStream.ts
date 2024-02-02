@@ -1,5 +1,5 @@
 // Video stream
-let localStream;
+let localStream: Awaited<ReturnType<typeof navigator.mediaDevices.getUserMedia>>;
 
 type StreamParams = {
   audio: boolean;

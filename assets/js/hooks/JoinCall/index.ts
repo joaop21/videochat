@@ -1,8 +1,14 @@
+import { ViewHook } from "phoenix_live_view";
 import { initLocalStream } from "../../localStream";
 
+async function doMounted() {
+  const stream = await initLocalStream({audio: true, video: true, width: "1280"})
+  const mediaElement = document.getElementById("local-video")! as HTMLMediaElement;
+  mediaElement.srcObject = stream!;
+};
+
 export default {
-  async mounted() {
-    const stream = await initLocalStream({audio: true, video: true, width: "1280"})
-    document.getElementById("local-video").srcObject = stream;
+  mounted() {
+    doMounted();
   }
-}
+} as ViewHook;
