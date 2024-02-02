@@ -1,9 +1,14 @@
+import { ViewHook } from "phoenix_live_view";
 import { getLocalStream } from "./localStream";
 
-const users: {[string]: { peerConnection: string | null }} = {};
+type Connection = {
+  peerConnection: RTCPeerConnection | null;
+}
+
+const users: Record<string, Connection> = {};
 
 export function addUserConnection(userUuid: string) {
-  if (users[userUuid] === undefined) {
+  if (!users[userUuid]) {
     users[userUuid] = {
       peerConnection: null
     }
@@ -27,7 +32,7 @@ export function getUserConnection(userUuid: string) {
 // lv       - Our LiveView hook's `this` object
 // fromUser - The user to create the peer connection with
 // offer    - Stores an SDP offer if it was passed to the function
-export function createPeerConnection(lv, fromUser, offer) {
+export function createPeerConnection(lv: ViewHook, fromUser: string, offer?: string) {
   const newPeerConnection = new RTCPeerConnection({
     iceServers: [
       // Using a public STUN server for now
@@ -85,7 +90,9 @@ export function createPeerConnection(lv, fromUser, offer) {
   // When the data is ready to flow, add it to the correct video.
   newPeerConnection.ontrack = async (event) => {
     console.log("Track received:", event)
-    document.getElementById(`video-remote-${fromUser}`).srcObject = event.streams[0]
+
+    const mediaElement = document.getElementById(`video-remote-${fromUser}`)! as HTMLMediaElement;
+    mediaElement.srcObject = event.streams[0]
   }
 
   return newPeerConnection;

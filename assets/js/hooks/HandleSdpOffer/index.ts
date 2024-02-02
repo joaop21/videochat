@@ -1,10 +1,11 @@
+import { ViewHook } from "phoenix_live_view";
 import { createPeerConnection } from "../../users";
 
 export default {
   mounted () {
     const data = this.el.dataset;
-    const fromUser = data.fromUserUuid;
-    const sdp = data.sdp;
+    const fromUser = data.fromUserUuid!;
+    const sdp = data.sdp!;
 
     if (sdp != "") {
       console.log("new sdp OFFER from", data.fromUserUuid, data.sdp);
@@ -12,4 +13,4 @@ export default {
       createPeerConnection(this, fromUser, sdp);
     }
   }
-}
+} as ViewHook;
