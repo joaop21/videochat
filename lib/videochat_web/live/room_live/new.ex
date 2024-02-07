@@ -5,22 +5,6 @@ defmodule VideochatWeb.RoomLive.New do
   alias Videochat.Organizer.Room
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <h1>Create a New Room</h1>
-    <div>
-      <.simple_form for={@form} phx-change="validate" phx-submit="save">
-        <.input type="text" field={@form[:title]} label="Title" />
-        <.input type="text" field={@form[:slug]} label="Slug" />
-        <:actions>
-          <.button phx-disable-with="Saving...">Save</.button>
-        </:actions>
-      </.simple_form>
-    </div>
-    """
-  end
-
-  @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, form: build_room_form())}
   end
