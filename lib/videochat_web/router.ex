@@ -20,8 +20,8 @@ defmodule VideochatWeb.Router do
     get "/", PageController, :home
 
     scope "/room" do
-      live "/new", Room.NewLive, :new
-      live "/:slug", Room.ShowLive, :show
+      live "/new", RoomLive.New, :new
+      live "/:slug", RoomLive.Show, :show
     end
   end
 

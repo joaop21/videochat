@@ -1,98 +1,10 @@
-defmodule VideochatWeb.Room.ShowLive do
+defmodule VideochatWeb.RoomLive.Show do
   use VideochatWeb, :live_view
 
   alias Phoenix.Socket.Broadcast
   alias Videochat.ConnectedUser
   alias Videochat.Organizer
   alias VideochatWeb.Presence
-
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <h1><%= @room.title %></h1>
-    <h3>Connected Users:</h3>
-    <ul>
-      <%= for uuid <- @connected_users do %>
-        <li><%= uuid %></li>
-      <% end %>
-    </ul>
-
-    <div class="streams">
-      <video
-        id="local-video"
-        class="[transform:rotateY(180deg)]"
-        playsinline
-        autoplay
-        muted
-        width="600"
-      >
-      </video>
-
-      <%= for uuid <- @connected_users do %>
-        <video
-          id={"video-remote-#{uuid}"}
-          data-user-uuid={uuid}
-          class="[transform:rotateY(180deg)]"
-          playsinline
-          autoplay
-          phx-hook="InitUser"
-        >
-        </video>
-      <% end %>
-    </div>
-
-    <button id="join-call-button" class="button" phx-hook="JoinCall" phx-click="join_call">
-      Join Call
-    </button>
-
-    <div id="offer-requests">
-      <%= for request <- @offer_requests do %>
-        <span
-          id={"offer-request-#{request.from_user.uuid}"}
-          phx-hook="HandleOfferRequest"
-          data-from-user-uuid={request.from_user.uuid}
-        >
-        </span>
-      <% end %>
-    </div>
-
-    <div id="sdp-offers">
-      <%= for sdp_offer <- @sdp_offers do %>
-        <span
-          id={"sdp-offer-#{sdp_offer["from_user"]}"}
-          phx-hook="HandleSdpOffer"
-          data-from-user-uuid={sdp_offer["from_user"]}
-          data-sdp={sdp_offer["description"]["sdp"]}
-        >
-        </span>
-      <% end %>
-    </div>
-
-    <div id="sdp-answers">
-      <%= for answer <- @answers do %>
-        <span
-          id={"sdp-answer-#{answer["from_user"]}"}
-          phx-hook="HandleAnswer"
-          data-from-user-uuid={answer["from_user"]}
-          data-sdp={answer["description"]["sdp"]}
-        >
-        </span>
-      <% end %>
-    </div>
-
-    <div id="ice-candidates">
-      <%= for ice_candidate_offer <- @ice_candidate_offers do %>
-        <span
-          id={"ice-candidate-#{Ecto.UUID.generate()}"}
-          phx-hook="HandleIceCandidateOffer"
-          data-from-user-uuid={ice_candidate_offer["from_user"]}
-          data-ice-candidate={Jason.encode!(ice_candidate_offer["candidate"])}
-        >
-        </span>
-      <% end %>
-    </div>
-    """
-  end
 
   @impl true
   def mount(%{"slug" => slug}, _session, socket) do

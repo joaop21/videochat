@@ -1,0 +1,10 @@
+<h1>Create a New Room</h1>
+<div>
+  <.simple_form for={@form} phx-change="validate" phx-submit="save">
+    <.input type="text" field={@form[:title]} label="Title" />
+    <.input type="text" field={@form[:slug]} label="Slug" />
+    <:actions>
+      <.button phx-disable-with="Saving...">Save</.button>
+    </:actions>
+  </.simple_form>
+</div>
